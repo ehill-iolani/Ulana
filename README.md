@@ -28,3 +28,7 @@ Usage: /usr/bin/ulana
 ```
 ulana -q 12 -l 1500 -c 56 -i my_sup_reads.fastq
 ```
+
+# Workflow illustration
+
+![](ulana_pipeline.jpg)
