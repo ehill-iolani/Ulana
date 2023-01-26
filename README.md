@@ -24,6 +24,13 @@ Usage: /usr/bin/ulana
   -i    name of input fastq file containing reads
 ```
 
+# Installation
+
+Docker image to run this pipeline as a container:
+```
+docker pull ethill/ulana:latest
+```
+
 # Sample command
 ```
 ulana -q 12 -l 1500 -c 56 -i my_sup_reads.fastq
