@@ -46,7 +46,7 @@ while getopts "hvq:l:c:i:" options; do
       exit 1
       ;;
 	v)
-	  echo "Ulana version $VERSION; extremely pre-alpha"
+	  echo "Ulana version $VERSION"
 	  exit 1
       ;;
     
