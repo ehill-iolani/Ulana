@@ -1,0 +1,159 @@
+#!/bin/bash
+# This workflow assumes that you are using ONLY nanopore reads basecalled using the SUP model
+# Default parameters are defined below
+# Needs Nanofilt, Flye , Medaka, and Prokka installed. If you want, you can install ropro.py as well for extraction
+
+start=$SECONDS
+source ~/anaconda3/etc/profile.d/conda.sh
+
+# Default values
+ncores=4
+VERSION=1.0.0
+quality=10
+minlength=1000
+reads=""
+
+# Defines the help page
+usage() {
+  figlet "Ulana"
+  echo ""
+  echo "Ulana v${VERSION}"
+  echo ""
+  echo "Bacterial genome assembly and annotation"
+  echo "using SUP ONT basecalled data"
+  echo "from MinION and Flongle flow cells"
+  echo ""
+  echo "Usage: $0
+  -h    help (prints this message)
+  -v    version
+  -q    minimum quality score; default is 10
+  -l    minimum read length; default is 1000
+  -c    number of cores to use; default is 4
+  -i    name of input fastq file containing reads 
+ "  1>&2
+}
+
+# Returns help screen if no arguments are entered
+[[ $@ ]] || { usage; exit 1; }
+
+# Defines arguments
+while getopts "hvq:l:c:i:" options; do
+  
+  
+  case "${options}" in
+    h)
+      usage
+      exit 1
+      ;;
+	v)
+	  echo "Ulana version $VERSION; extremely pre-alpha"
+	  exit 1
+      ;;
+    
+    c)
+      ncores=${OPTARG}
+	  coreavail=$(lscpu | grep -E '^CPU\(' | sed 's/[^0-9]*//g') 
+	  if [ $ncores -le $coreavail ] ; then 
+	  ncores=$ncores ; else
+	  ncores=4
+	  fi
+	  ;;
+	q)
+	  quality=${OPTARG}
+	  ;;
+	l)
+	  minlength=${OPTARG}
+	  if ! [ "$size" == "1000" ] ; then 
+	  minlength=${OPTARG} ; else
+	  minlength=$minlength
+	  fi
+	  ;;
+	i)
+	  reads=${OPTARG}
+	  if [ $reads == "" ] ; then
+	  exit 1 ; else
+	  reads=${OPTARG}
+	  fi
+	  ;;
+    esac
+done
+
+figlet "Ulana"
+echo ""
+echo "Ulana v${VERSION}"
+echo ""
+echo "Bacterial genome assembly and annotation"
+echo "using SUP ONT basecalled data"
+echo "from MinION and Flongle flow cells"
+echo ""
+
+# Checks read format; if .gz is provided it will be uncompressed
+if [ -e *.fastq.gz ] ; then 
+	echo "Unzipping fastq.gz file"
+	gunzip -fk $reads > ${reads%.*.*}.fastq
+	name="${reads%.*.*}"
+	echo "" ; else
+	echo "Input is already uncompressed"
+	echo ""
+	name="${reads%.*}"
+fi 
+
+# Filters reads using NanoFilt
+if [[ -f "$name"_filt.fastq ]] ; then
+	echo "Reads were already filtered using:"
+	NanoFilt -v
+	echo "" ; else
+	echo "Filtering reads using:"
+	NanoFilt -v
+	NanoFilt -q $quality -l $minlength "${name}.fastq" > "${name}"_filt.fastq
+	echo ""
+fi
+
+# Generates assembly using Flye only if one does not previously exist
+if [[ -d flye_assembly ]] ; then 
+	echo "An assembly was already generated using:" 
+	echo Flye `flye -v`
+	echo "" ; else
+	echo "Generating assembly using:"
+	echo Flye `flye -v`
+	echo ""
+	flye --nano-hq "$name"_filt.fastq --out-dir flye_assembly --threads $ncores
+	echo ""
+fi
+
+# Polishes the Flye assembly using Medaka if polishing has not been previously completed
+if [[ -d medaka ]] ; then 
+	echo "Assembly has already been polished using:"
+	medaka --version
+	echo "" ; else
+	echo "Polishing assembly using `medaka --version`"
+	echo ""
+	medaka_consensus -i "$name"_filt.fastq -d flye_assembly/assembly.fasta -o medaka -t $ncores -m r941_min_sup_g507
+	echo ""
+fi
+
+# Annotates polished genome using Prokka
+if [[ -d prokka_out ]] ; then
+	echo "Polished assembly has already been annotated using:"
+	prokka -v 
+	echo "" ; else 
+	echo "Polished assembly is being annotated using:"
+	prokka -v
+	echo ""
+	prokka --outdir prokka_out --prefix $name medaka/consensus.fasta --cpus $ncores
+	echo ""
+fi
+	
+# Ropro summary of Prokka results extracts and BLASTs 16s and rpoB and summarizes tRNA's found
+if [[ -d ropro_out ]] ; then
+	echo "Prokka annotation already summarized using ropro"
+	echo "" ; else
+	echo "Prokka annotation is being summarized by ropro"
+	echo ""
+	ropro -ra -i prokka_out -o out -b /root/anaconda3/envs/ulana/bin/blastn
+	echo ""
+fi
+
+end=$SECONDS
+duration=$(( end - start ))
+echo "Ulana took $duration seconds to complete the assembly and annotation"
