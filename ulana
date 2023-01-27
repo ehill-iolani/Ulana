@@ -45,37 +45,36 @@ while getopts "hvq:l:c:i:" options; do
       usage
       exit 1
       ;;
-	v)
-	  echo "Ulana version $VERSION"
-	  exit 1
-      ;;
-    
+    v)
+      echo "Ulana version $VERSION"
+      exit 1
+      ;;    
     c)
       ncores=${OPTARG}
-	  coreavail=$(lscpu | grep -E '^CPU\(' | sed 's/[^0-9]*//g') 
-	  if [ $ncores -le $coreavail ] ; then 
-	  ncores=$ncores ; else
-	  ncores=4
-	  fi
-	  ;;
-	q)
-	  quality=${OPTARG}
-	  ;;
-	l)
-	  minlength=${OPTARG}
-	  if ! [ "$size" == "1000" ] ; then 
-	  minlength=${OPTARG} ; else
-	  minlength=$minlength
-	  fi
-	  ;;
-	i)
-	  reads=${OPTARG}
-	  if [ $reads == "" ] ; then
-	  exit 1 ; else
-	  reads=${OPTARG}
-	  fi
-	  ;;
-    esac
+      coreavail=$(lscpu | grep -E '^CPU\(' | sed 's/[^0-9]*//g') 
+      if [ $ncores -le $coreavail ] ; then 
+      ncores=$ncores ; else
+      ncores=4
+      fi
+      ;;
+    q)
+      quality=${OPTARG}
+      ;;
+    l)
+      minlength=${OPTARG}
+      if ! [ "$size" == "1000" ] ; then 
+      minlength=${OPTARG} ; else
+      minlength=$minlength
+      fi
+      ;;
+    i)
+      reads=${OPTARG}
+      if [ $reads == "" ] ; then
+      exit 1 ; else
+      reads=${OPTARG}
+      fi
+      ;;
+  esac
 done
 
 figlet "Ulana"
