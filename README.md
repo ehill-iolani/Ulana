@@ -3,6 +3,10 @@
 
 A bacterial genome assembly and annotation using SUP ONT basecalled data from MinION and Flongle flow cells.
 
+ulana
+
+1. vt. To plait, weave, knit, braid; plaiting, weaving. Also unala, nala, unana. Mea ulana ʻia, plaited or woven material, textile. Mea ulana lole, weaver (Isa. 38.12), loom. (PPN langa.)
+
 ```
  _   _ _
 | | | | | __ _ _ __   __ _
