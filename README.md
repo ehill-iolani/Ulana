@@ -40,6 +40,11 @@ docker exec -it container_name bash
 
 # Sample command
 ```
+# Fast
+ulana -q 8 -l 1500 -c 56 -i my_sup_reads.fastq
+# HAC
+ulana -q 9 -l 1500 -c 56 -i my_sup_reads.fastq
+# SUP
 ulana -q 12 -l 1500 -c 56 -i my_sup_reads.fastq
 ```
 
