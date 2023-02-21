@@ -35,6 +35,7 @@ Usage: /usr/bin/ulana
 Docker image to run this pipeline as a container:
 ```
 docker pull ethill/ulana:latest
+docker exec -it container_name bash
 ```
 
 # Sample command
