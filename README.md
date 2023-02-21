@@ -1,5 +1,5 @@
 # Ulana
-***U***nicellular ***L***ong-read ***A***ssembly and ***A***nnotation
+***U***nicellular ***L***ong-read ***A***ssembly a***N***d ***A***nnotation
 
 A bacterial genome assembly and annotation using SUP ONT basecalled data from MinION and Flongle flow cells.
 
