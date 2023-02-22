@@ -167,5 +167,5 @@ if [[ -f $reads && $basecalling = "r941_min_fast_g507" ]] || [[ -f $reads && $ba
     end=$SECONDS
     duration=$(( end - start ))
     echo "Ulana took $duration seconds to complete the assembly and annotation" ; else
-	echo "Either the input file does not exist or a the basecalling model was not specified."
+    echo "Either the input file does not exist or a the basecalling model was not specified."
 fi 
