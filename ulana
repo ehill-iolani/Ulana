@@ -127,7 +127,7 @@ if [[ -f $reads && $basecalling = "r941_min_fast_g507" ]] || [[ -f $reads && $ba
     	echo "Generating assembly using:"
     	echo Flye `flye -v`
     	echo ""
-    	flye --nano-hq "$name"_filt.fastq --out-dir flye_assembly --threads $ncores
+    	flye --nano-raw "$name"_filt.fastq --out-dir flye_assembly --threads $ncores
     	echo ""
     fi
     
