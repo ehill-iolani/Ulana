@@ -18,8 +18,8 @@ ulana
 Ulana v1.0.1
 
 Bacterial genome assembly and annotation
-using SUP ONT basecalled data
-from MinION and Flongle flow cells
+pipeline using Fast, HAC, or SUP ONT basecalled
+data from MinION and Flongle flow cells
 
 Usage: /usr/bin/ulana
   -h    help (prints this message)
