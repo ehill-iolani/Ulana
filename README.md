@@ -1,7 +1,7 @@
 # Ulana
 ***U***nicellular ***L***ong-read ***A***ssembly a***N***d ***A***nnotation
 
-A bacterial genome assembly and annotation using SUP ONT basecalled data from MinION and Flongle flow cells.
+A bacterial genome assembly and annotation pipeline using Fast, HAC or SUP ONT basecalled data from MinION and Flongle flow cells.
 
 ulana
 
@@ -15,11 +15,11 @@ ulana
  \___/|_|\__,_|_| |_|\__,_|
 
 
-Ulana v1.0.0
+Ulana v1.0.1
 
 Bacterial genome assembly and annotation
 using SUP ONT basecalled data
-for MinION and Flongle flow cells
+from MinION and Flongle flow cells
 
 Usage: /usr/bin/ulana
   -h    help (prints this message)
@@ -28,6 +28,7 @@ Usage: /usr/bin/ulana
   -l    minimum read length; default is 1000
   -c    number of cores to use; default is 4
   -i    name of input fastq file containing reads
+  -b    type of basecalling used; the options are: r941_min_fast_g507, r941_min_hac_g507, r941_min_sup_g507
 ```
 
 # Installation
@@ -38,14 +39,18 @@ docker pull ethill/ulana:latest
 docker exec -it container_name bash
 ```
 
-# Sample command
+# Sample commands
+Fast basecalling
 ```
-# Fast basecalling
-ulana -q 8 -l 1500 -c 56 -i my_sup_reads.fastq
-# HAC basecalling
-ulana -q 9 -l 1500 -c 56 -i my_sup_reads.fastq
-# SUP basecalling
-ulana -q 12 -l 1500 -c 56 -i my_sup_reads.fastq
+ulana -q 8 -l 1500 -c 56 -i fast_basecalled_reads.fastq -b r941_min_fast_g507
+```
+HAC basecalling
+```
+ulana -q 9 -l 1500 -c 56 -i hac_basecalled_reads.fastq -b r941_min_hac_g507
+```
+SUP basecalling
+```
+ulana -q 10 -l 1500 -c 56 -i sup_basecalled_reads.fastq -b r941_min_sup_g507
 ```
 
 # Workflow illustration
