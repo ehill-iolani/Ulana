@@ -15,7 +15,7 @@ ulana
  \___/|_|\__,_|_| |_|\__,_|
 
 
-Ulana v1.0.1
+Ulana v1.0.2
 
 Bacterial genome assembly and annotation
 pipeline using Fast, HAC, or SUP ONT basecalled
