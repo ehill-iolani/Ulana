@@ -1,5 +1,5 @@
 #!/bin/bash
-# This workflow assumes that you are using ONLY nanopore reads basecalled using the SUP model
+# This workflow assumes that you are using ONLY nanopore reads 
 # Default parameters are defined below
 # Needs Nanofilt, Flye , Medaka, and Prokka installed. If you want, you can install ropro.py as well for extraction
 
@@ -8,7 +8,7 @@ source ~/anaconda3/etc/profile.d/conda.sh
 
 # Default values
 ncores=4
-VERSION=1.0.1
+VERSION=1.0.2
 quality=10
 minlength=1000
 reads=""
@@ -127,7 +127,10 @@ if [[ -f $reads && $basecalling = "r941_min_fast_g507" ]] || [[ -f $reads && $ba
     	echo "Generating assembly using:"
     	echo Flye `flye -v`
     	echo ""
-    	flye --nano-raw "$name"_filt.fastq --out-dir flye_assembly --threads $ncores
+		if [[ -f $reads && $basecalling = "r941_min_sup_g507" ]] ; then
+			flye --nano-hq "$name"_filt.fastq --out-dir flye_assembly --threads $ncores ; else
+			flye --nano-raw "$name"_filt.fastq --out-dir flye_assembly --threads $ncores
+		fi
     	echo ""
     fi
     
