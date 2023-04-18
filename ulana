@@ -166,6 +166,25 @@ if [[ -f $reads && $basecalling = "r941_min_fast_g507" ]] || [[ -f $reads && $ba
     	ropro -ra -i prokka_out -o out -b /root/anaconda3/envs/ulana/bin/blastn
     	echo ""
     fi
+	
+    # Checks genome completeness using CheckM
+    if [[ -d checkm ]] ; then 
+        echo "Genome completeness has been already been checked using:"
+        echo "CheckM v1.2.2"
+        echo "" ; else
+        echo "Checking genome completeness using CheckM"
+        echo ""
+        conda deactivate
+        source /root/anaconda3/etc/profile.d/conda.sh
+        conda activate checkm
+        checkm lineage_wf --reduced_tree -t $ncores -x fasta medaka checkm
+        mkdir checkm/summary
+        checkm qa -o 2 -f checkm/summary/summary.txt checkm/lineage.ms checkm/
+        conda deactivate
+        source /root/anaconda3/etc/profile.d/conda.sh
+        conda activate ulana
+       	echo ""
+    fi
     
     end=$SECONDS
     duration=$(( end - start ))
